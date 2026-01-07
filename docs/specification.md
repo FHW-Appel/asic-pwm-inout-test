@@ -49,9 +49,9 @@ On every clock cycle, the out_stage module writes either the register value or t
 ```verilog
 module out_stage (
     input wire clk,
-    input wire reset,
-    input sel_pwm,
-    input invert_polarity,
+    input wire rst_n,
+    input wire sel_pwm,
+    input wire invert_polarity,
     input wire [6:0] ovalues,
     input wire [6:0] pwm_dc,
     output reg [6:0] opins
@@ -65,8 +65,8 @@ On every clock cycle, the in_stage module reads the input pins and writes the va
 ```verilog
 module in_stage (
     input wire clk,
-    input wire reset,
-    input invert_polarity,
+    input wire rst_n,
+    input wire invert_polarity,
     input wire [6:0] ipins,
     output reg [6:0] ivalues
     );
@@ -80,9 +80,9 @@ The pwm_gen module is a pulse width generator.
 ```verilog
 module pwm_gen (
     input wire clk,
-    input wire reset,
+    input wire rst_n,
     input wire sel_inpins,
-    input invert_polarity,
+    input wire invert_polarity,
     output reg pwm_sig,
     input wire [6:0] duty_cycle_o
     );
@@ -103,8 +103,8 @@ The pwm_input module measures the duty cycle of an incoming PWM signal with a 20
 ```verilog
 module pwm_input (
     input wire clk,
-    input wire reset,
-    input invert_polarity,
+    input wire rst_n,
+    input wire invert_polarity,
     input wire pwm_in,
     output reg [6:0] duty_cycle_i
     );
@@ -120,7 +120,28 @@ module pwm_input (
 ## if
 The interface module allows external communication with the hardware via the register module. Writing to registers configures the hardware behavior, while reading from registers reflects the current hardware status.
 
-- [ ] While UART, SPI and I2C are accessible on tiny tapeout only UART is accessible by the ICEbreaker v1.1 development board. The final decision has not been made so far. Further investigation on possible implementations is necessary.
+The interface module uses an SPI interface.
+
+```verilog
+module pwm_input (
+    input wire clk,
+    input wire rst_n,
+    input wire spi_cs_n,
+    input wire spi_sck,
+    input wire spi_mosi,
+    output reg spi_miso
+    );
+```
+
+* Data shall be shifted out with the most-significant bit (MSB) first.
+* SPI mode 0 shall be implemented:
+    * Data is shifted out on the falling edge of `spi_sck`.
+    * Data is sampled on the rising edge of `spi_sck`.
+* A SPI command shall be implemented as follows:
+    * A command consists of an 8-bit address followed by 8-bit data.
+    * The MSB of the address determines whether to write or read: `1` writes to the register, `0` reads from the register.
+* Communication starts when `spi_cs_n` is driven low. When `spi_cs_n` returns high, the SPI logic shift register shall be reset.
+* A clock-domain crossing needs to be implemented to handle the different clocks of `spi_sck` and `clk`.
 
 ## register
 The register module stores configuration and status values that can be written by the interface or the hardware. All registers are readable by the interface, but only some registers are writable by the interface.
@@ -137,10 +158,17 @@ The register module stores configuration and status values that can be written b
 
 # Top-Level
 
-Open Topics:
-- [ ] Clock frequency
-- [ ] Pin assignment 
-- [ ] Pin polarity
+* The clock frequency is assumed to be 12 MHz, which aligns with the clock frequency of the FPGA ICEbreaker v1.1 development board.
+* `ui_in[6:0]` shall be used for the in_stage `ipins`.
+* `ui_in[7]` shall be used for the pwm_input `pwm_in`.
+* `uo_out[6:0]` shall be used for the out_stage `opins`.
+* `uo_out[7]` shall be used for the pwm_gen `pwm_sig`.
+* SPI interface shall be as following:
+  * `uio[0]` - CS_N (configured as input)
+  * `uio[1]` - MOSI (configured as input)
+  * `uio[2]` - MISO (configured as output)
+  * `uio[3]` - SCK (configured as input)
+
 
 ```mermaid
 graph TD;
