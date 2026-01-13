@@ -1,0 +1,4 @@
+
+
+# ignore any folder in test/sby/ but not the files inside test/sby
+test/sby/*/

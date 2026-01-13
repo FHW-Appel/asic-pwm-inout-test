@@ -1,0 +1,14 @@
+[options]
+mode bmc
+
+[engines]
+smtbmc
+
+[files]
+../../src/out_stage.v
+out_stage_tb.v
+
+[script]
+read -formal out_stage.v 
+read -formal out_stage_tb.v
+prep -top out_stage_tb
