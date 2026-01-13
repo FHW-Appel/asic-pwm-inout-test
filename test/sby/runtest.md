@@ -55,9 +55,22 @@ To perform formal verification on the `out_stage.v` module:
 
 The `-f` flag forces a fresh run, removing any previous verification results.
 
-## Expected Output
+Results will be saved in the `out_stage/` sub directory.
 
-- SymbiYosys will process the test configuration
-- The tool will run formal verification engines
-- Results will be saved in the `out_stage/` directory
-- Check the `status` file and `logfile.txt` for verification results
+### Testing in_stage Module
+
+To perform formal verification on the `in_stage.v` module:
+
+1. Navigate to the test directory:
+   ```bash
+   cd test/sby/
+   ```
+
+2. Run the formal verification:
+   ```bash
+   sby -f in_stage.sby
+   ```
+
+Results will be saved in the `in_stage/` sub directory.
+
+
