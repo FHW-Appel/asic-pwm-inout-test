@@ -35,15 +35,22 @@ module in_stage_tb;
         f_past_valid <= 1;
 
         if (f_past_valid) begin
+            
+            // Cover the invert behavior
+            _c_prove_invert_: cover($past(invert_polarity) && $past(ipins) == ~ivalues && ivalues != 7'b0);
+
+            // Cover the non-invert behavior
+            _c_prove_no_invert_: cover(!$past(invert_polarity) && $past(ipins) == ivalues && ivalues != 7'b0);
+
             // After reset, ivalues should be zero
             if ($past(rst_n) == 0) begin
-                assert(ivalues == 7'b0);
+                _a_prove_reset_: assert(ivalues == 7'b0);
             end else begin
                 // Check behavior based on invert_polarity
                 if ($past(invert_polarity)) begin
-                    assert(ivalues == ~$past(ipins));
+                    _a_prove_invert_: assert(ivalues == ~$past(ipins));
                 end else begin
-                    assert(ivalues == $past(ipins));
+                    _a_prove_no_invert_: assert(ivalues == $past(ipins));
                 end
             end
         end

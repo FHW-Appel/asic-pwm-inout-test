@@ -1,5 +1,11 @@
+[tasks]
+taskcover prove_cover
+tastbmc prove_bmc
+
 [options]
-mode bmc
+prove_cover: mode cover
+prove_cover: depth 100
+prove_bmc: mode bmc
 
 [engines]
 smtbmc

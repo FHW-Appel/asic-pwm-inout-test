@@ -1,0 +1,27 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Wed Jan 14 12:43:46 2026
+[*]
+[dumpfile] "/foss/designs/asic-pwm-inout-test/test/sby/in_stage_taskcover/engine_0/trace0.vcd"
+[dumpfile_mtime] "Wed Jan 14 12:42:36 2026"
+[dumpfile_size] 1701
+[savefile] "/foss/designs/asic-pwm-inout-test/test/sby/in_stage.gtkw"
+[timestart] 0
+[size] 1427 600
+[pos] -1 -1
+*-2.990181 11 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[treeopen] in_stage_tb.
+[sst_width] 297
+[signals_width] 150
+[sst_expanded] 1
+[sst_vpaned_height] 149
+@28
+in_stage_tb.uut.clk
+in_stage_tb.uut.invert_polarity
+in_stage_tb.uut.ipins[6:0]
+@29
+in_stage_tb.uut.ivalues[6:0]
+@28
+in_stage_tb.uut.rst_n
+[pattern_trace] 1
+[pattern_trace] 0

@@ -40,6 +40,19 @@ module out_stage_tb;
         f_past_valid <= 1;
 
         if (f_past_valid) begin
+            
+            // Cover the invert behavior when sel_pwm is set
+            _c_prove_invert_pwm_: cover($past(sel_pwm) && $past(invert_polarity) && $past(pwm_dc) == ~opins && opins != 7'b0);
+
+            // Cover the non-invert behavior when sel_pwm is set
+            _c_prove_no_invert_pwm_: cover($past(sel_pwm) && !$past(invert_polarity) && $past(pwm_dc) == opins && opins != 7'b0);
+
+            // Cover the invert behavior when sel_pwm is not set
+            _c_prove_invert_ovalues_: cover(!$past(sel_pwm) && $past(invert_polarity) && $past(ovalues) == ~opins && opins != 7'b0);
+
+            // Cover the non-invert behavior when sel_pwm is not set
+            _c_prove_no_invert_ovalues_: cover(!$past(sel_pwm) && !$past(invert_polarity) && $past(ovalues) == opins && opins != 7'b0);
+
             // After reset, opins should be zero
             if ($past(rst_n) == 0) begin
                 assert(opins == 7'b0);
