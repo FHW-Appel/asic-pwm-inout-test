@@ -1,0 +1,60 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Fri Jan 16 11:04:41 2026
+[*]
+[dumpfile] "/foss/designs/asic-pwm-inout-test/test/sby/pwm_gen_taskcover/engine_0/trace1.vcd"
+[dumpfile_mtime] "Fri Jan 16 11:03:55 2026"
+[dumpfile_size] 47270
+[savefile] "/foss/designs/asic-pwm-inout-test/test/sby/pwm_gen.gtkw"
+[timestart] 0
+[size] 1427 600
+[pos] -1 -1
+*-9.890181 1365 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[treeopen] pwm_gen_tb.
+[sst_width] 297
+[signals_width] 190
+[sst_expanded] 1
+[sst_vpaned_height] 149
+@29
+pwm_gen_tb.uut.clk
+@23
+pwm_gen_tb.uut.duty_cycle_buf[6:0]
+pwm_gen_tb.uut.duty_cycle_o[6:0]
+@29
+pwm_gen_tb.uut.duty_reg
+pwm_gen_tb.uut.invert_polarity
+@23
+pwm_gen_tb.uut.prescaler_cnt[6:0]
+pwm_gen_tb.uut.pwm_period_cnt[10:0]
+@29
+pwm_gen_tb.uut.pwm_sig
+pwm_gen_tb.uut.rst_n
+pwm_gen_tb.uut.sel_inpins
+[pattern_trace] 1
+[pattern_trace] 0
