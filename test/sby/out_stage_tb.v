@@ -1,5 +1,5 @@
 `default_nettype none
-`timescale 1ns/1ps
+`timescale 8.333ns/8.333ps
 
 // This module is a testbench for the out_stage module 
 // in order to test its functionality using SymbiYosys (sby).
