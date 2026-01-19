@@ -66,5 +66,48 @@ module pwm_gen (
         end
     end
 
+
+
+`ifdef FORMAL
+
+    reg f_past_valid = 0;
+
+    initial assume (rst_n == 0);
+
+    always @(posedge clk) begin
+        
+        f_past_valid <= 1;
+
+        // Assumption: rst_n is initially 0, then stays 1
+        assume (rst_n == 1 || !f_past_valid);
+
+        if (f_past_valid) begin
+            // Cover checks
+
+            // Cover pwm_sig goes high
+            _c_prove_pwm_high_: cover(pwm_sig == 1'b1 && invert_polarity == 1'b0);
+
+            // Cover pwm_sig goes low
+            _c_prove_pwm_low_: cover(pwm_sig == 1'b0 && invert_polarity == 1'b0 && $past(rst_n) == 1'b1);
+
+            // cover pwm_period_cnt reaches 4
+            //_c_prove_pwm_period_cnt_4_: cover(uut.pwm_period_cnt == 11'd4);
+            // ERROR: Cannot access uut.pwm_period_cnt. Yosys limitation!
+
+            // Assert checks
+            if ($past(rst_n) == 0) begin
+                // After reset, pwm_sig should be low
+                if (!invert_polarity) begin
+                    _a_prove_reset_: assert(pwm_sig == 1'b0);
+                end else begin
+                    _a_prove_reset_invert_: assert(pwm_sig == 1'b1);
+                end
+            end
+            
+        end
+    end
+
+`endif
+
  endmodule
 

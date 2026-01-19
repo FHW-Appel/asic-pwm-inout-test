@@ -84,7 +84,8 @@ module pwm_gen (
     input wire sel_inpins,
     input wire invert_polarity,
     output reg pwm_sig,
-    input wire [6:0] duty_cycle_o
+    input wire [6:0] reg_dc, 
+    input wire [6:0] pin_dc
     );
 ```
 * The period of the pwm signal shall be 20 ms.

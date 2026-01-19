@@ -12,9 +12,7 @@ smtbmc
 
 [files]
 ../../src/pwm_gen.v
-pwm_gen_tb.v
 
 [script]
 read -formal pwm_gen.v 
-read -formal pwm_gen_tb.v
-prep -top pwm_gen_tb
+prep -top pwm_gen

@@ -23,4 +23,38 @@ module in_stage (
     end
 
 
+
+`ifdef FORMAL
+
+    reg f_past_valid = 0;
+
+    initial assume (rst_n == 0);
+    always @(posedge clk) begin
+        
+        f_past_valid <= 1;
+
+        if (f_past_valid) begin
+            
+            // Cover the invert behavior
+            _c_prove_invert_: cover($past(invert_polarity) && $past(ipins) == ~ivalues && ivalues != 7'b0);
+
+            // Cover the non-invert behavior
+            _c_prove_no_invert_: cover(!$past(invert_polarity) && $past(ipins) == ivalues && ivalues != 7'b0);
+
+            // After reset, ivalues should be zero
+            if ($past(rst_n) == 0) begin
+                _a_prove_reset_: assert(ivalues == 7'b0);
+            end else begin
+                // Check behavior based on invert_polarity
+                if ($past(invert_polarity)) begin
+                    _a_prove_invert_: assert(ivalues == ~$past(ipins));
+                end else begin
+                    _a_prove_no_invert_: assert(ivalues == $past(ipins));
+                end
+            end
+        end
+
+    end
+`endif
+
 endmodule

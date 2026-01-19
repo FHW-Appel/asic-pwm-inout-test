@@ -184,7 +184,7 @@ graph LR
 
 ### Basic Structure
 
-Formal properties are embedded in your Verilog testbench using SystemVerilog assertions:
+Formal properties are embedded in your Verilog file using SystemVerilog assertions:
 
 ```verilog
 `ifdef FORMAL
@@ -245,63 +245,6 @@ end
 cover($past(invert_polarity) && output_value != 7'b0);
 ```
 
-### Practical Testbench Template
-
-```verilog
-`default_nettype none
-`timescale 1ns/1ps
-
-module my_design_tb;
-    // Declare testbench signals
-    reg clk;
-    reg rst_n;
-    reg [7:0] input_data;
-    wire [7:0] output_data;
-    
-    // Instantiate design under test
-    my_design uut (
-        .clk(clk),
-        .rst_n(rst_n),
-        .input_data(input_data),
-        .output_data(output_data)
-    );
-    
-`ifdef FORMAL
-    reg f_past_valid = 0;
-    
-    // Constrain initial state
-    initial assume(rst_n == 0);
-    
-    always @(posedge clk) begin
-        f_past_valid <= 1;
-        
-        if (f_past_valid) begin
-            // ASSERTIONS: Properties that must always hold
-            
-            // Reset behavior
-            if ($past(rst_n) == 0) begin
-                my_reset_check: assert(output_data == 8'b0);
-            end
-            
-            // Normal operation
-            if ($past(rst_n) == 1) begin
-                my_functionality_check: assert(output_data == $past(input_data) + 1);
-            end
-            
-            // COVERS: States we want to prove are reachable
-            
-            // Cover: Can output reach maximum value?
-            reach_max: cover(output_data == 8'hFF);
-            
-            // Cover: Can we see a transition from 0 to non-zero?
-            transition_check: cover($past(output_data) == 0 && output_data != 0);
-        end
-    end
-`endif
-
-endmodule
-```
-
 ### Labels
 
 Label your assertions and covers with descriptive names:
@@ -336,14 +279,12 @@ smtbmc
 [files] 
 # You should use relative pathes
 ../src/path/to/design.v
-./path/to/testbench.v
 
 [script] 
 # The files defined under [files] are coppied to a subfolder.
 # Therefore, in the [script] section the reference to the file must be without the path.  
 read -formal design.v
-read -formal testbench.v
-prep -top testbench_module
+prep -top design
 
 ```
 
@@ -396,8 +337,7 @@ Yosys commands to read and prepare the design:
 ```ini
 [script]
 read -formal design.v      # Read design with formal properties
-read -formal testbench.v   # Read testbench
-prep -top testbench_name   # Prepare with testbench as top module
+prep -top designname  # Prepare with designname as top module. You can use the same name as you use for your verilog module.
 ```
 
 #### 5. `[files]`
@@ -407,7 +347,6 @@ List of Verilog files needed for verification:
 ```ini
 [files]
 ../../src/my_design.v
-my_testbench.v
 ```
 
 ### Complete Example
@@ -429,12 +368,10 @@ smtbmc
 
 [files]
 ../../src/in_stage.v
-in_stage_tb.v
 
 [script]
 read -formal in_stage.v 
-read -formal in_stage_tb.v
-prep -top in_stage_tb
+prep -top in_stage
 ```
 
 ### Multiple Tasks
@@ -621,70 +558,7 @@ The `in_stage` module should:
 2. When `invert_polarity` is 1, output inverted input (`ivalues = ~ipins`)
 3. When `invert_polarity` is 0, output equals input (`ivalues = ipins`)
 
-### Writing the Testbench
 
-```verilog
-`default_nettype none
-`timescale 1ns/1ps
-
-module in_stage_tb;
-    reg clk;
-    reg rst_n;
-    reg invert_polarity;
-    reg [6:0] ipins;
-    wire [6:0] ivalues;
-
-    // Instantiate design
-    in_stage uut (
-        .clk(clk),
-        .rst_n(rst_n),
-        .invert_polarity(invert_polarity),
-        .ipins(ipins),
-        .ivalues(ivalues)
-    );
-
-`ifdef FORMAL
-    reg f_past_valid = 0;
-    
-    // Assume reset is initially asserted
-    initial assume(rst_n == 0);
-    
-    always @(posedge clk) begin
-        f_past_valid <= 1;
-        
-        if (f_past_valid) begin
-            // ASSERTIONS: Check correct behavior
-            
-            // Property 1: Reset behavior
-            if ($past(rst_n) == 0) begin
-                _a_prove_reset_: assert(ivalues == 7'b0);
-            end else begin
-                // Property 2: Invert mode
-                if ($past(invert_polarity)) begin
-                    _a_prove_invert_: assert(ivalues == ~$past(ipins));
-                // Property 3: Normal mode
-                end else begin
-                    _a_prove_no_invert_: assert(ivalues == $past(ipins));
-                end
-            end
-            
-            // COVERS: Check reachability
-            
-            // Cover 1: Can we reach invert mode with non-zero output?
-            _c_prove_invert_: cover($past(invert_polarity) && 
-                                    $past(ipins) == ~ivalues && 
-                                    ivalues != 7'b0);
-            
-            // Cover 2: Can we reach normal mode with non-zero output?
-            _c_prove_no_invert_: cover(!$past(invert_polarity) && 
-                                       $past(ipins) == ivalues && 
-                                       ivalues != 7'b0);
-        end
-    end
-`endif
-
-endmodule
-```
 
 ### Configuration File
 
@@ -703,12 +577,10 @@ smtbmc
 
 [files]
 ../../src/in_stage.v
-in_stage_tb.v
 
 [script]
 read -formal in_stage.v 
-read -formal in_stage_tb.v
-prep -top in_stage_tb
+prep -top in_stage
 ```
 
 ### Running Verification
@@ -814,16 +686,6 @@ Use assumptions to model realistic input constraints:
 assume(input_addr < MAX_ADDR);
 assume(data_valid -> data_size <= MAX_SIZE);
 ```
-
-### 6. Separate Design and Verification
-
-Keep formal properties in testbench modules, not in the design itself:
-
-```
-✓ design.v         - Pure synthesizable RTL
-✓ design_tb.v      - Testbench with formal properties
-```
-
 ### 7. Incremental Verification
 
 Verify modules individually before integrating:
