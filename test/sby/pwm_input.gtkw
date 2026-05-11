@@ -1,0 +1,68 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Mon May 11 18:32:23 2026
+[*]
+[dumpfile] "/foss/designs/asic-pwm-inout-test/test/sby/pwm_input_taskcover/engine_0/trace3.vcd"
+[dumpfile_mtime] "Mon May 11 18:30:50 2026"
+[dumpfile_size] 8945
+[savefile] "/foss/designs/asic-pwm-inout-test/test/sby/pwm_input.gtkw"
+[timestart] 0
+[size] 2421 600
+[pos] -1 -1
+*-5.633175 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[sst_width] 297
+[signals_width] 206
+[sst_expanded] 1
+[sst_vpaned_height] 149
+@28
+pwm_input.a_cover_lower_limit_EN
+pwm_input.a_cover_reset_EN
+pwm_input.a_cover_upper_limit_EN
+pwm_input.a_cover_valid_EN
+pwm_input.clk
+@24
+[color] 2
+pwm_input.duty_cycle_i[6:0]
+@28
+pwm_input.f_past_valid
+pwm_input.invert_polarity
+@22
+pwm_input.prescaler_cnt[6:0]
+@25
+pwm_input.pwm_active[6:0]
+@28
+pwm_input.pwm_in
+pwm_input.pwm_in_d
+pwm_input.pwm_internal
+@22
+pwm_input.pwm_period_cnt[7:0]
+@28
+pwm_input.rst_n
+[pattern_trace] 1
+[pattern_trace] 0
