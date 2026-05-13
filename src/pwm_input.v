@@ -28,45 +28,57 @@ module pwm_input (
     // The PWM signal has a periode of 20 ms, which corresponds to 2000 Pescaler periods
     // Therfore, we need a counter that counts up to 2000
     // The duty cycle shall range from 5% (1 ms active time) to 10% (2 ms active time)
-    reg [7:0] pwm_period_cnt; // Counter for duty cycle (0-100 and 100 to 200)
+    reg [7:0] pwm_duty_cnt; // Counter for duty cycle (0-100 and 100 to 200)
     reg [6:0] pwm_active; // Counter for active time (0-100) 5% up to 10%
 
     wire pwm_internal = invert_polarity ? ~pwm_in : pwm_in; // Handle polarity inversion
     reg pwm_in_d; // Delayed version of pwm_internal for edge detection
 
     always @(posedge clk) begin
+        pwm_in_d <= pwm_internal; // Update delayed input for edge detection
+    end
+
+    wire pwm_posedge = pwm_internal && !pwm_in_d; // Rising edge detection
+    wire pwm_negedge = !pwm_internal && pwm_in_d; // Falling edge
+
+
+    always @(posedge clk) begin
         if (!rst_n) begin
-            duty_cycle_i <= 7'd127; // Reset value corresponds to undefined duty cycle
+            duty_cycle_i <= 7'd0; // Reset value corresponds to undefined duty cycle
             prescaler_cnt <= 7'b0;
-            pwm_period_cnt <= 8'b0;   
+            pwm_duty_cnt <= 8'b0;   
             pwm_active <= 7'b0;
         end else begin
-            if (pwm_internal && !pwm_in_d) begin
+            if (pwm_posedge) begin
                 // Rising edge detected, reset counters
                 prescaler_cnt <= 7'b0;
-                pwm_period_cnt <= 7'b0;   
+                pwm_duty_cnt <= 7'b0;   
                 pwm_active <= 7'b0;
-            end else if (!(prescaler_cnt == `PRESCALER_MAX)) begin
-                prescaler_cnt <= prescaler_cnt + 1'b1;
             end else begin
-                prescaler_cnt <= 7'b0;
-                pwm_in_d <= pwm_internal; // Update delayed input for edge detection
-                // Increment PWM period counter every 10 us
-                pwm_period_cnt <= pwm_period_cnt + 1'b1;
-                if (pwm_period_cnt > `PWM_INITIAL) begin
-                    pwm_active <= pwm_active + 1'b1; // Increment active time counter after 1 ms
-                end
-                if (pwm_period_cnt > `PWM_ACTIVE_MAX) begin
-                    duty_cycle_i <= 7'd125; // Error code 125 corresponds to more than 10% duty cycle
-                    pwm_period_cnt <= pwm_period_cnt; // Stop counting to prevent overflow
-                end else if (!pwm_internal && pwm_in_d) begin
-                    // Falling edge detected
-                    if (pwm_period_cnt < `PWM_INITIAL+1) begin
-                        duty_cycle_i <= 7'd126; // Error code 126 corresponds to less than 5% duty cycle    
-                    end else begin
-                        duty_cycle_i <= pwm_active; // Update duty cycle with active time count                        
+                if (!(prescaler_cnt == `PRESCALER_MAX)) begin
+                    prescaler_cnt <= prescaler_cnt + 1'b1;
+                end else begin
+                    prescaler_cnt <= 7'b0;
+                    if (pwm_internal) begin
+                        // Increment PWM duty counter every 10 us
+                        pwm_duty_cnt <= pwm_duty_cnt + 1'b1;
+                        if (pwm_duty_cnt > `PWM_INITIAL) begin
+                            pwm_active <= pwm_active + 1'b1; // Increment active time counter after 1 ms
+                        end
+                        if (pwm_duty_cnt > `PWM_ACTIVE_MAX) begin
+                            duty_cycle_i <= 7'd99; // Error code 99 corresponds to more than 10% duty cycle
+                            pwm_duty_cnt <= pwm_duty_cnt; // Stop counting to prevent overflow
+                        end 
                     end
-                end 
+                    if (pwm_negedge) begin
+                        // Falling edge detected
+                        if (pwm_duty_cnt < `PWM_INITIAL+1) begin
+                            duty_cycle_i <= 7'd1; // Error code 1 corresponds to less than 5% duty cycle    
+                        end else begin
+                            duty_cycle_i <= pwm_active; // Update duty cycle with active time count                        
+                        end    
+                    end
+                end
             end
         end
     end
@@ -82,10 +94,10 @@ module pwm_input (
 
     always @(posedge clk) begin
         
-        a_cover_reset: cover(duty_cycle_i == 7'd127); // Cover reset value
-        a_cover_lower_limit: cover(duty_cycle_i == 7'd126); // Cover case of less than 5% duty cycle
+        a_cover_reset: cover(duty_cycle_i == 7'd0); // Cover reset value
+        a_cover_lower_limit: cover(duty_cycle_i == 7'd1); // Cover case of less than 5% duty cycle
         a_cover_valid: cover(duty_cycle_i == 7'd2); // Cover case of valid duty cycle
-        a_cover_upper_limit: cover(duty_cycle_i == 7'd125); // Cover case of more than 10% duty cycle
+        a_cover_upper_limit: cover(duty_cycle_i == 7'd99); // Cover case of more than 10% duty cycle
 
 /*
         f_past_valid <= 1;
