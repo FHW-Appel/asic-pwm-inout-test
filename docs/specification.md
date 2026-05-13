@@ -113,9 +113,9 @@ module pwm_input (
 * The module measures the duty cycle of the incoming PWM signal in 10 microsecond steps, starting the measurement after the first 1000 us of the pulse.
 * When the PWM signal changes from low to high, the counter shall be reset to zero.
 * When the PWM signal returns to low, the duty_cycle_i register shall be updated with the measured count value. 
-* During a reset of the module the output register duty_cycle_i shall be set to 127. 
-* If the duty cycle of the incoming PWM signal is below 1000 us, then the output register duty_cycle_i shall be set to 126. 
-* If the duty cycle of the incoming PWM signal is above 2000 us, then the output register duty_cycle_i shall be set to 125. 
+* During a reset of the module the output register duty_cycle_i shall be set to 0. 
+* If the duty cycle of the incoming PWM signal is below 1000 us, then the output register duty_cycle_i shall be set to 1. 
+* If the duty cycle of the incoming PWM signal is above 2000 us, then the output register duty_cycle_i shall be set to 99. 
 * The invert_polarity signal controls the pwm_in signal polarity.
 
 ## if
