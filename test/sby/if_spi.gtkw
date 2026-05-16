@@ -1,0 +1,77 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Sat May 16 19:33:24 2026
+[*]
+[dumpfile] "/foss/designs/asic-pwm-inout-test/test/sby/if_spi_taskcover/engine_0/trace1.vcd"
+[dumpfile_mtime] "Sat May 16 19:28:55 2026"
+[dumpfile_size] 8754
+[savefile] "/foss/designs/asic-pwm-inout-test/test/sby/if_spi.gtkw"
+[timestart] 0
+[size] 3374 1371
+[pos] -27 -24
+*-5.593456 327 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[sst_width] 297
+[signals_width] 332
+[sst_expanded] 1
+[sst_vpaned_height] 418
+@28
+if_spi.a_cover_reset_EN
+@29
+if_spi.addr[7:0]
+@28
+if_spi.addr_int[7:0]
+[color] 5
+if_spi.clk
+if_spi.data_in[7:0]
+if_spi.data_int[7:0]
+if_spi.data_out[7:0]
+@24
+if_spi.bit_count[3:0]
+if_spi.databit_count[2:0]
+@28
+if_spi.f_past_valid
+[color] 2
+if_spi.rst_internal
+[color] 2
+if_spi.rst_n
+[color] 5
+if_spi.sck_falling_edge
+[color] 5
+if_spi.sck_rising_edge
+[color] 2
+if_spi.spi_cs_n
+if_spi.spi_miso
+if_spi.spi_mosi
+[color] 5
+if_spi.spi_sck
+[color] 5
+if_spi.spi_sck_prev
+if_spi.write_en
+[pattern_trace] 1
+[pattern_trace] 0
