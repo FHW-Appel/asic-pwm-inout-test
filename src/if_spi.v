@@ -38,7 +38,6 @@ always @(posedge clk) begin
         bit_count <= 4'b0000;
         databit_count <= 3'b111; // Start from 7 for data bits
         write_en <= 1'b0;
-        spi_miso <= 1'b0;
     end else begin
         write_en <= 1'b0; // Default to no write, will set to 1 when we have valid address/data
 
@@ -47,7 +46,6 @@ always @(posedge clk) begin
             if (bit_count < 8) begin
                 addr_int <= {addr_int[6:0], spi_mosi}; // Shift in address bits
             end else begin
-                databit_count <= databit_count - 1;
                 data_int <= {data_int[6:0], spi_mosi}; // Shift in data bits
             end   
             if (bit_count == 7) begin
@@ -60,10 +58,11 @@ always @(posedge clk) begin
         end
 
         if (sck_falling_edge && bit_count > 7) begin
-            spi_miso <= data_out[databit_count]; 
+            databit_count <= databit_count - 1;
         end
     end
 end
+assign spi_miso = ~rst_n ? 1'b0 : data_out[databit_count]; 
 
 `ifdef FORMAL
 
