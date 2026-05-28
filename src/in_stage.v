@@ -1,5 +1,5 @@
 `default_nettype none
-`timescale 8.333ns/8.333ps
+//`timescale 8.333ns/83.33ps
 // see ../docs/specification.md for module description
 
 module in_stage (

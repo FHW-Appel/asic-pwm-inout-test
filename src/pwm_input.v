@@ -1,15 +1,15 @@
 `default_nettype none
-`timescale 8.333ns/8.333ps
+//`timescale 8.333ns/83.33ps
 // see ../docs/specification.md for module description
 
 `ifdef FORMAL
     `define PRESCALER_MAX 7'd1
-    `define PWM_INITIAL 7'd9
-    `define PWM_ACTIVE_MAX 7'd20
+    `define PWM_INITIAL 8'd9
+    `define PWM_ACTIVE_MAX 8'd20
 `else
     `define PRESCALER_MAX 7'd119
-    `define PWM_INITIAL 7'd99
-    `define PWM_ACTIVE_MAX 7'd200
+    `define PWM_INITIAL 8'd99
+    `define PWM_ACTIVE_MAX 8'd200
 `endif
 
 module pwm_input (
@@ -32,14 +32,15 @@ module pwm_input (
     reg [6:0] pwm_active; // Counter for active time (0-100) 5% up to 10%
 
     wire pwm_internal = invert_polarity ? ~pwm_in : pwm_in; // Handle polarity inversion
-    reg pwm_in_d; // Delayed version of pwm_internal for edge detection
+    reg pwm_in_d, pwm_in_dd; // Delayed version of pwm_internal for edge detection
 
     always @(posedge clk) begin
         pwm_in_d <= pwm_internal; // Update delayed input for edge detection
+        pwm_in_dd <= pwm_in_d; // Update double-delayed input for edge detection
     end
 
-    wire pwm_posedge = pwm_internal && !pwm_in_d; // Rising edge detection
-    wire pwm_negedge = !pwm_internal && pwm_in_d; // Falling edge
+    wire pwm_posedge = pwm_in_d && !pwm_in_dd; // Rising edge detection
+    wire pwm_negedge = !pwm_in_d && pwm_in_dd; // Falling edge
 
 
     always @(posedge clk) begin
@@ -70,14 +71,14 @@ module pwm_input (
                             pwm_duty_cnt <= pwm_duty_cnt; // Stop counting to prevent overflow
                         end 
                     end
-                    if (pwm_negedge) begin
-                        // Falling edge detected
-                        if (pwm_duty_cnt < `PWM_INITIAL+1) begin
-                            duty_cycle_i <= 7'd1; // Error code 1 corresponds to less than 5% duty cycle    
-                        end else begin
-                            duty_cycle_i <= pwm_active; // Update duty cycle with active time count                        
-                        end    
-                    end
+                end
+                if (pwm_negedge) begin
+                    // Falling edge detected
+                    if (pwm_duty_cnt < `PWM_INITIAL+1) begin
+                        duty_cycle_i <= 7'd1; // Error code 1 corresponds to less than 5% duty cycle    
+                    end else begin
+                        duty_cycle_i <= pwm_active; // Update duty cycle with active time count                        
+                    end       
                 end
             end
         end

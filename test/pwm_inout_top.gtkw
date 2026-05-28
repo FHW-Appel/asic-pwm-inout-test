@@ -1,0 +1,148 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Thu May 28 11:00:59 2026
+[*]
+[dumpfile] "/foss/designs/asic-pwm-inout-test/test/sim_build/pwm_inout_top.vcd"
+[dumpfile_mtime] "Thu May 28 10:39:24 2026"
+[dumpfile_size] 15927
+[savefile] "/foss/designs/asic-pwm-inout-test/test/pwm_inout_top.gtkw"
+[timestart] 1498856000
+[size] 2203 1116
+[pos] -1 -1
+*-18.121695 1500083000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[treeopen] pwm_inout_top.
+[sst_width] 297
+[signals_width] 174
+[sst_expanded] 1
+[sst_vpaned_height] 330
+@28
+pwm_inout_top.clk
+pwm_inout_top.rst_n
+@200
+-SPI
+@28
+pwm_inout_top.spi_cs_n
+pwm_inout_top.spi_sck
+pwm_inout_top.spi_mosi
+pwm_inout_top.spi_miso
+@200
+-Inputs
+@22
+pwm_inout_top.ipins[6:0]
+@28
+pwm_inout_top.pwm_in
+@200
+-Outputs
+@22
+pwm_inout_top.opins[6:0]
+@28
+pwm_inout_top.pwm_sig
+@200
+-Registers
+@c00022
+pwm_inout_top.Pinout[7:0]
+@28
+(0)pwm_inout_top.Pinout[7:0]
+(1)pwm_inout_top.Pinout[7:0]
+(2)pwm_inout_top.Pinout[7:0]
+(3)pwm_inout_top.Pinout[7:0]
+(4)pwm_inout_top.Pinout[7:0]
+(5)pwm_inout_top.Pinout[7:0]
+(6)pwm_inout_top.Pinout[7:0]
+(7)pwm_inout_top.Pinout[7:0]
+@1401200
+-group_end
+@22
+pwm_inout_top.Pinin[7:0]
+@c00022
+pwm_inout_top.PWMgen[7:0]
+@28
+(0)pwm_inout_top.PWMgen[7:0]
+(1)pwm_inout_top.PWMgen[7:0]
+(2)pwm_inout_top.PWMgen[7:0]
+(3)pwm_inout_top.PWMgen[7:0]
+(4)pwm_inout_top.PWMgen[7:0]
+(5)pwm_inout_top.PWMgen[7:0]
+(6)pwm_inout_top.PWMgen[7:0]
+(7)pwm_inout_top.PWMgen[7:0]
+@1401200
+-group_end
+@c00022
+pwm_inout_top.PWMin[7:0]
+@28
+(0)pwm_inout_top.PWMin[7:0]
+(1)pwm_inout_top.PWMin[7:0]
+(2)pwm_inout_top.PWMin[7:0]
+(3)pwm_inout_top.PWMin[7:0]
+(4)pwm_inout_top.PWMin[7:0]
+(5)pwm_inout_top.PWMin[7:0]
+(6)pwm_inout_top.PWMin[7:0]
+(7)pwm_inout_top.PWMin[7:0]
+@1401200
+-group_end
+@c00022
+pwm_inout_top.Polarity[7:0]
+@28
+(0)pwm_inout_top.Polarity[7:0]
+(1)pwm_inout_top.Polarity[7:0]
+(2)pwm_inout_top.Polarity[7:0]
+(3)pwm_inout_top.Polarity[7:0]
+(4)pwm_inout_top.Polarity[7:0]
+(5)pwm_inout_top.Polarity[7:0]
+(6)pwm_inout_top.Polarity[7:0]
+(7)pwm_inout_top.Polarity[7:0]
+@1401200
+-group_end
+@200
+-RegIF
+@22
+pwm_inout_top.addr[7:0]
+pwm_inout_top.data_in[7:0]
+@28
+pwm_inout_top.write_en
+@22
+pwm_inout_top.data_out[7:0]
+@200
+-pwm_input_inst
+@22
+pwm_inout_top.pwm_input_inst.duty_cycle_i[6:0]
+@28
+pwm_inout_top.pwm_input_inst.invert_polarity
+@22
+pwm_inout_top.pwm_input_inst.prescaler_cnt[6:0]
+pwm_inout_top.pwm_input_inst.pwm_active[6:0]
+pwm_inout_top.pwm_input_inst.pwm_duty_cnt[7:0]
+@28
+pwm_inout_top.pwm_input_inst.pwm_in
+pwm_inout_top.pwm_input_inst.pwm_in_d
+pwm_inout_top.pwm_input_inst.pwm_internal
+pwm_inout_top.pwm_input_inst.pwm_negedge
+pwm_inout_top.pwm_input_inst.pwm_posedge
+[pattern_trace] 1
+[pattern_trace] 0
