@@ -4,3 +4,5 @@
 test/sby/*/
 test/results.xml
 test/sim_build/*
+/runs/
+/test/fpga/*/
