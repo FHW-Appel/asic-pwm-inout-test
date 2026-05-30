@@ -104,6 +104,14 @@ module pwm_inout_top
     .duty_cycle_i   (PWMin[6:0])
     );
 
+   // Prevent warnings for unused signals
+     wire _unused = &{addr[7:3], Polarity[7:5], Polarity[0], 1'b0};
+
+    // All output pins must be assigned. If not used, assign to 0.
+    assign Pinin[7] = 1'b0;
+    assign PWMin[7] = 1'b0;
+     
+
 endmodule
 
 module cocotb_iverilog_dump();

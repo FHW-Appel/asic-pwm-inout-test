@@ -31,6 +31,7 @@ always @(posedge clk) begin
             3'h4: Pinout <= data_in;
             3'h2: PWMgen <= data_in;
             3'h0: Polarity <= data_in;
+            default: ; // No write for odd addresses
         endcase
     end
 end

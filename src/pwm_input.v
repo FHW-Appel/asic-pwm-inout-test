@@ -53,7 +53,7 @@ module pwm_input (
             if (pwm_posedge) begin
                 // Rising edge detected, reset counters
                 prescaler_cnt <= 7'b0;
-                pwm_duty_cnt <= 7'b0;   
+                pwm_duty_cnt <= 8'b0;   
                 pwm_active <= 7'b0;
             end else begin
                 if (!(prescaler_cnt == `PRESCALER_MAX)) begin
